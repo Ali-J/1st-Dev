@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1373193626 source:/home/ali/1st-Dev/Practice2/main.cpp
+	<iostream>
+
+1373193577 source:/home/ali/1st-Dev/Practice2/SideProg.cpp
+	<iostream>
+

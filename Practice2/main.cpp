@@ -1,15 +1,59 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
 int mult(int x, int y);
-int Array();
+void Array();
+void Product();
+void Guess();
 
 int main()
 {
+    bool ValidSelect = 0;
+    while(ValidSelect == 0)
+    {
+        int ProgX = 3;
+        cout<<"Select which program you wish to execute:\n (0)Prod\n (1)Array\n (2)Guess\n (9)Exit\n";
+        cin>> ProgX;
+        cin.ignore();
+        if(ProgX == 0)
+            {
+            //Check if variable is greater then 12
+            cout<< "\nExecuting Product program\n";
+            ValidSelect = 1;
+            Product();
+            }
+        else if(ProgX == 1)
+            {
+            //Check if variable is greater then 12
+            cout<< "\nExecuting Array program\n";
+            ValidSelect = 1;
+            Array();
+            }
+        else if(ProgX == 2)
+            {
+            //Check if variable is greater then 12
+            cout<< "\nExecuting Guessing program\n";
+            ValidSelect = 1;
+            Guess();
+            }
+        else if(ProgX == 9)
+            {
+            //Check if variable is greater then 12
+            cout<< "\nExiting program\n";
+            return 0;
+            }
+        else
+            {
+            cout<< "\nInvalid selection\n";
+            ValidSelect = 0;
+            }
+    }
+}
 
-    Array();
-
+void Product()
+{
     int thisisanumber;
     int NumX;
     int NumY;
@@ -52,6 +96,7 @@ int main()
         cout<< thisisanumber <<" is less than 12\n";
         cin.get();
         }
+    return;
 }
 
 // Function to multiply two values together
@@ -61,7 +106,7 @@ int mult(int x, int y)
 }
 
 
-int Array()
+void Array()
 {
     // Take inputs to find out hwo many values to be entered into array
     int NumX;
@@ -96,4 +141,42 @@ int Array()
         {
         cout << "\nValue entered: " << UserArray[x];
         }
+    return;
+}
+
+void Guess()
+{
+    int Number = rand() %10;
+    int AttemptNum = 0;
+    int Attempt = -1;
+    int NumberOfAttempts = 0;
+
+    for(AttemptNum = 0; AttemptNum < 8; AttemptNum++)
+    {
+        cout << "Please enter your guess: ";
+        cin >> Attempt;
+
+        if(Attempt != Number)
+        {
+            if(Attempt > Number)
+            {
+                cout << "\nYour guess was too high\n";
+            }
+            else
+            {
+                cout << "\nYour guess was too low\n";
+            }
+            NumberOfAttempts = 7 - AttemptNum;
+            cout << "You have " << NumberOfAttempts << " attempts left\n";
+        }
+
+        else
+        {
+            cout << "Correct!!!";
+            AttemptNum = 8;
+        }
+    }
+
+
+    return;
 }

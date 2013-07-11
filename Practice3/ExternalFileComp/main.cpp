@@ -3,6 +3,11 @@
 
 using namespace std;
 
+string Convert(int);
+string ConvertTens(int);
+string ConvertTeens(int);
+
+
 int main()
 {
     //Create variables for conversion and storage
@@ -15,13 +20,18 @@ int main()
     int DigitLoop = 0;
 
     //Chars for storing english conversion
-    char Millions[17];
-    char HundThous[13];
-    char TenThous[8];
-    char Thousands[14];
-    char Hundreds[12];
-    char Tens[7];
-    char Singles[5];
+    string Sign = "";
+    string Millions = "";
+    string HundThous = "";
+    string TenThous = "";
+    string Thousands = "";
+    string Hundreds = "";
+    string Tens = "";
+    string Singles = "";
+
+    //Temporary storage for plain english equivalent
+    //of digit being converted
+    string StrOutput = "";
 
     int SingledDigits[7];
 
@@ -36,7 +46,7 @@ int main()
 
     //Calculate how many digits there are in the
     //number being converted to english
-    while(TempConv>9)
+    while(TempConv>9||TempConv<0)
     {
         DigitTotal++;
         TempConv = TempConv/10;
@@ -46,6 +56,14 @@ int main()
     //being converted
     Deductor = 10;
     Comparitor = 9;
+
+    //If number is negative then remove - from start
+    //and remember that number is negative
+    if(InputConv<0)
+    {
+        InputConv = InputConv*-1;
+        Sign = "Minus ";
+    }
 
     //****************** 1st Sub Loop **********************//
     for(DigitLoop=0; DigitLoop < (DigitTotal-2); DigitLoop++)
@@ -80,7 +98,6 @@ int main()
 
     //Deduct value just calculated
     InputConv = InputConv - (Deductor*DigitTrack);
-
     Deductor = Deductor / 10;
     Comparitor = Comparitor / 10;
 
@@ -91,7 +108,205 @@ int main()
     //Re-assemble digits in english form
     for(DigitLoop=0; DigitLoop < DigitTotal; DigitLoop++)
     {
-        cout << "\nSingledDigits = "<< SingledDigits[DigitLoop];
+        //Debug - outputs individual digits for number array
+        //cout << "\nSingledDigits = "<< SingledDigits[DigitLoop];
+
+        if ((DigitTotal-DigitLoop-1) == 6 && SingledDigits[DigitLoop]!=0)
+        {
+            StrOutput = Convert(SingledDigits[DigitLoop]);
+            Millions = StrOutput + " million, ";
+        }
+        else if((DigitTotal-DigitLoop-1) == 5 && SingledDigits[DigitLoop]!=0)
+        {
+            StrOutput = Convert(SingledDigits[DigitLoop]);
+            HundThous = StrOutput + " hundred and ";
+        }
+        else if((DigitTotal-DigitLoop-1) == 4 && SingledDigits[DigitLoop]!=0)
+        {
+            StrOutput = ConvertTens(SingledDigits[DigitLoop]);
+            TenThous = StrOutput;
+        }
+        else if((DigitTotal-DigitLoop-1) == 3 && SingledDigits[DigitLoop]!=0)
+        {
+            if(SingledDigits[DigitLoop-1] == 1)
+            {
+                StrOutput = ConvertTeens(SingledDigits[DigitLoop]);
+                TenThous = StrOutput + " thousand, ";
+            }
+            else
+            {
+                StrOutput = Convert(SingledDigits[DigitLoop]);
+                Thousands = " " +StrOutput + " thousand, ";
+            }
+        }
+        else if((DigitTotal-DigitLoop-1) == 2 && SingledDigits[DigitLoop]!=0)
+        {
+            StrOutput = Convert(SingledDigits[DigitLoop]);
+            Hundreds = StrOutput + " hundred and ";
+        }
+        else if((DigitTotal-DigitLoop-1) == 1 && SingledDigits[DigitLoop]!=0)
+        {
+            StrOutput = ConvertTens(SingledDigits[DigitLoop]);
+            Tens = StrOutput + " ";
+        }
+        else if((DigitTotal-DigitLoop-1) == 0 && SingledDigits[DigitLoop]!=0)
+        {
+            if(SingledDigits[DigitLoop-1] == 1)
+            {
+                StrOutput = ConvertTeens(SingledDigits[DigitLoop]);
+                Tens = StrOutput;
+            }
+            else
+            {
+                StrOutput = Convert(SingledDigits[DigitLoop]);
+                Singles = StrOutput;
+            }
+        }
     }
+    // Final output of complete string
+    cout << "\n" + Sign + Millions + HundThous + TenThous + Thousands + Hundreds + Tens + Singles;
 }
 
+//Convert individual digits from numbers
+//to plain english (Singles)
+string Convert(int NumbToConvert)
+{
+    string StrReturn = "";
+    if (NumbToConvert == 1)
+    {
+        StrReturn = "one";
+    }
+    else if(NumbToConvert == 2)
+    {
+        StrReturn = "two";
+    }
+    else if(NumbToConvert == 3)
+    {
+        StrReturn = "three";
+    }
+    else if(NumbToConvert == 4)
+    {
+        StrReturn = "four";
+    }
+    else if(NumbToConvert == 5)
+    {
+        StrReturn = "five";
+    }
+    else if(NumbToConvert == 6)
+    {
+        StrReturn = "six";
+    }
+    else if(NumbToConvert == 7)
+    {
+        StrReturn = "seven";
+    }
+    else if(NumbToConvert == 8)
+    {
+        StrReturn = "eight";
+    }
+    else if(NumbToConvert == 9)
+    {
+        StrReturn = "nine";
+    }
+    else
+    {
+        StrReturn = "";
+    }
+    return StrReturn;
+}
+
+//Convert individual digits from numbers
+//to plain english (Tens)
+string ConvertTens(int NumbToConvert)
+{
+    string StrReturn = "";
+    if (NumbToConvert == 1)
+    {
+        StrReturn = "ten";
+    }
+    else if(NumbToConvert == 2)
+    {
+        StrReturn = "twenty";
+    }
+    else if(NumbToConvert == 3)
+    {
+        StrReturn = "thirty";
+    }
+    else if(NumbToConvert == 4)
+    {
+        StrReturn = "fourty";
+    }
+    else if(NumbToConvert == 5)
+    {
+        StrReturn = "fifty";
+    }
+    else if(NumbToConvert == 6)
+    {
+        StrReturn = "sixty";
+    }
+    else if(NumbToConvert == 7)
+    {
+        StrReturn = "seventy";
+    }
+    else if(NumbToConvert == 8)
+    {
+        StrReturn = "eighty";
+    }
+    else if(NumbToConvert == 9)
+    {
+        StrReturn = "ninety";
+    }
+    else
+    {
+        StrReturn = "";
+    }
+    return StrReturn;
+}
+
+//Convert individual digits from numbers
+//to plain english (Teens)
+string ConvertTeens(int NumbToConvert)
+{
+    string StrReturn = "";
+    if (NumbToConvert == 1)
+    {
+        StrReturn = "eleven";
+    }
+    else if(NumbToConvert == 2)
+    {
+        StrReturn = "twelve";
+    }
+    else if(NumbToConvert == 3)
+    {
+        StrReturn = "thirteen";
+    }
+    else if(NumbToConvert == 4)
+    {
+        StrReturn = "fourteen";
+    }
+    else if(NumbToConvert == 5)
+    {
+        StrReturn = "fifteen";
+    }
+    else if(NumbToConvert == 6)
+    {
+        StrReturn = "sixteen";
+    }
+    else if(NumbToConvert == 7)
+    {
+        StrReturn = "seventeen";
+    }
+    else if(NumbToConvert == 8)
+    {
+        StrReturn = "eighteen";
+    }
+    else if(NumbToConvert == 9)
+    {
+        StrReturn = "nineteen";
+    }
+    else
+    {
+        StrReturn = "";
+    }
+    return StrReturn;
+}
